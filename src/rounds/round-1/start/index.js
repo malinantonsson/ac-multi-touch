@@ -1,18 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Start = () => {
+const Start = ({onStartRoundOne, roundOneProgress}) => {
   return (
-    <div>
-      <h1>React Slingshot</h1>
-
-      <h2>Get Started</h2>
-      <ol>
-        <li>Review the <Link to="/fuel-savings">demo app</Link></li>
-        <li>Remove the demo and start coding: npm run remove-demo</li>
-      </ol>
+    <div className={'start'}>
+      <h1>Micro Geographic Pricing Activity</h1>
+      <p>Progress: { roundOneProgress }</p>
+      <div className={'start__button'}>
+        <button onClick={onStartRoundOne}>Start</button>
+      </div>
     </div>
   );
+};
+
+Start.propTypes = {
+  onStartRoundOne: PropTypes.func.isRequired,
+  roundOneProgress: PropTypes.string.isRequired,
 };
 
 export default Start;

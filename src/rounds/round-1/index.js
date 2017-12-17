@@ -1,3 +1,3 @@
-import Start from './start';
+import { Start } from '../../containers/roundOne';
 
 export default Start;
