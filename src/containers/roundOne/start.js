@@ -1,4 +1,6 @@
 import {connect} from 'react-redux';
+import { push } from 'react-router-redux';
+import { ROUTES } from '../../constants';
 
 import { startRoundOne } from '../../actions/roundOne/start';
 
@@ -15,6 +17,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onStartRoundOne: () => {
     dispatch(startRoundOne());
+    dispatch(push(`${ROUTES.ROUND_ONE.BASE}/${ROUTES.ROUND_ONE.MAP}`));
   }
 });
 

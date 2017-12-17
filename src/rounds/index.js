@@ -1,3 +1,3 @@
-import RoundOne from './round-1';
+import RoundOne, { Map as RoundOneMap } from './round-1';
 
-export { RoundOne };
+export { RoundOne, RoundOneMap };

@@ -1,2 +1,4 @@
 import ROUND_ONE from './roundOne';
-export { ROUND_ONE };
+import ROUTES from './routes';
+
+export { ROUND_ONE, ROUTES };
