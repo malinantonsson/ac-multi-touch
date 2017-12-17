@@ -8,7 +8,7 @@ const Competitor = ({ name }) => (
 );
 
 Competitor.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
 };
 
 export { Competitor };

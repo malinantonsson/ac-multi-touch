@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, NavLink, Route } from 'react-router-dom';
-import { RoundOne, RoundOneMap } from '../rounds';
+import { RoundOne, RoundOneMap, RoundOneGrid } from '../rounds';
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
@@ -23,6 +23,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={RoundOne} />
           <Route path="/round-one/map" component={RoundOneMap} />
+          <Route path="/round-one/grid" component={RoundOneGrid} />
         </Switch>
       </div>
     );
