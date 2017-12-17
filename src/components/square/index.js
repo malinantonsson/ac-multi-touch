@@ -1,8 +1,10 @@
 import React from 'react';
 import './style.scss';
 
-const Square = ({ children }) => (
-  <div className={'square'}>{children}</div>
-);
+const Square = ({ onClick, children }) => {
+  return (
+    <div onClick={onClick} className={'square'}>{children}</div>
+  )
+};
 
 export { Square };

@@ -16,16 +16,38 @@ class Grid extends React.Component {
     this.state = {
       showColorPicker: false,
       showMenu: false,
+      selectedSquares: [],
     };
   }
 
-  toggleMenu() {
+  toggleMenu(evt) {
     this.setState({ showMenu: !this.state.showMenu });
   }
 
   toggleColorPicker() {
-    console.log('toggleColorPicker');
     this.setState({ showColorPicker: !this.state.showColorPicker });
+  }
+
+  onSelectedColour(colour) {
+    this.toggleColorPicker();
+    const selectedSquares = this.state.selectedSquares;
+    console.log(selectedSquares);
+    const divStyle = {
+      backgroundColor: 'red'
+    }
+    selectedSquares.map(item => {
+      console.log(item);
+      item.style.backgroundColor = colour;
+    });
+  }
+
+  onClickSquare(evt) {
+    console.log('onClickSquare', evt.target);
+    if(this.state.showColorPicker) return;
+    const selectedSquares = this.state.selectedSquares;
+    selectedSquares.push(evt.target);
+    this.setState({ selectedSquares: selectedSquares });
+    this.toggleColorPicker();
   }
 
   renderSquares() {
@@ -39,11 +61,11 @@ class Grid extends React.Component {
       const hasCrh = i === crhPos;
       const hasComp = i === competitorPos;
       if(hasCrh) {
-        squares.push(<Square key={`square--${i}`}><Crh /></Square>);
+        squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}><Crh /></Square>);
       } else if(hasComp) {
-        squares.push(<Square key={`square--${i}`}><Competitor /></Square>);
+        squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}><Competitor /></Square>);
       } else {
-        squares.push(<Square key={`square--${i}`}/>);
+        squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}/>);
       }
 
     }
@@ -63,9 +85,9 @@ class Grid extends React.Component {
           </div>
 
           { this.state.showMenu ? <p>Contextual menu Open</p> : <p>Contextual menu close</p>}
-          <button onClick={() => { this.toggleMenu(); }}>Open menu</button>
+          <button onClick={(evt) => { this.toggleMenu(evt); }}>Open menu</button>
 
-          { this.state.showColorPicker ? <ColourPicker onSelectColour={ (colour) => { console.log(colour); this.toggleColorPicker(); }} onClose={() => this.toggleColorPicker()} /> : <p>Colour picker close</p>}
+          { this.state.showColorPicker ? <ColourPicker onSelectColour={ (colour) => { this.onSelectedColour(colour); this.toggleColorPicker(); }} onClose={() => this.toggleColorPicker()} /> : <p>Colour picker close</p>}
           <button onClick={() => { this.toggleColorPicker(); }}>Open colorpicker</button>
         </div>
       </div>
