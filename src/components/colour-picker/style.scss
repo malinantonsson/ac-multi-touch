@@ -1,0 +1,32 @@
+.colourPicker {
+  width: 200px;
+  height: 100px;
+  display: flex;
+}
+
+.colourPicker__item {
+  flex: 1 0 auto;
+  &--red {
+    background-color: red;
+  }
+
+  &--pink {
+    background-color: pink;
+  }
+
+  &--grey {
+    background-color: grey;
+  }
+
+  &--lightblue {
+    background-color: lightblue;
+  }
+
+  &--blue {
+    background-color: blue;
+  }
+}
+
+.colourPicker__close {
+  background-color: black;
+}

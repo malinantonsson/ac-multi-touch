@@ -6,6 +6,8 @@ import { ROUTES } from '../../../constants';
 import { Crh } from '../../../components/crh';
 import { Competitor } from '../../../components/competitor';
 import { Square } from '../../../components/square';
+import { ColourPicker } from '../../../components/colour-picker';
+
 import './style.scss';
 
 class Grid extends React.Component {
@@ -22,6 +24,7 @@ class Grid extends React.Component {
   }
 
   toggleColorPicker() {
+    console.log('toggleColorPicker');
     this.setState({ showColorPicker: !this.state.showColorPicker });
   }
 
@@ -62,7 +65,7 @@ class Grid extends React.Component {
           { this.state.showMenu ? <p>Contextual menu Open</p> : <p>Contextual menu close</p>}
           <button onClick={() => { this.toggleMenu(); }}>Open menu</button>
 
-          { this.state.showColorPicker ? <p>colour picker Open</p> : <p>Colour picker close</p>}
+          { this.state.showColorPicker ? <ColourPicker onSelectColour={ (colour) => { console.log(colour); this.toggleColorPicker(); }} onClose={() => this.toggleColorPicker()} /> : <p>Colour picker close</p>}
           <button onClick={() => { this.toggleColorPicker(); }}>Open colorpicker</button>
         </div>
       </div>
