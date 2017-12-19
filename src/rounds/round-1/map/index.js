@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { ROUTES } from '../../../constants';
@@ -35,6 +34,5 @@ class Map extends React.Component {
   }
 }
 
-Map.propTypes = {};
 
 export default Map;
