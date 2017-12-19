@@ -10,6 +10,12 @@ import { ColourPicker } from '../../../components/colour-picker';
 
 import './style.scss';
 
+const onElementOver = (evt, state) => {
+  const { isActive, selectedColor } = state;
+  if(!isActive) return;
+  evt.target.style.backgroundColor = selectedColor;
+}
+
 class Grid extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +23,19 @@ class Grid extends React.Component {
       showColorPicker: false,
       showMenu: false,
       selectedSquares: [],
+      squares: {},
+      isActive: false,
+      selectedColor: '',
+      gridEl: '',
+      isSelected: false,
+      isHovering: false,
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      gridEl: document.querySelector('.grid__squares'),
+    });
   }
 
   toggleMenu(evt) {
@@ -30,23 +48,46 @@ class Grid extends React.Component {
 
   onSelectedColour(colour) {
     this.toggleColorPicker();
+    this.setState({selectedColor: colour, isActive: true});
     const selectedSquares = this.state.selectedSquares;
-    console.log(selectedSquares);
-    const divStyle = {
-      backgroundColor: 'red'
+  }
+
+  onListenForMouseUp(grid) {
+    grid.removeEventListener('mouseover', onElementOver, true);
+    this.setState({ isActive: false, isSelected: false });
+  }
+
+  setListener() {
+    const grid = this.state.gridEl;
+    const isActive = this.state.isActive;
+    const colour = this.state.selectedColor;
+
+    if(!this.state.isHovering) { //only start this once
+      grid.addEventListener('mouseover', (evt) => onElementOver(evt, this.state), true);
+      this.setState({isHovering: true});
     }
-    selectedSquares.map(item => {
-      console.log(item);
-      item.style.backgroundColor = colour;
-    });
+    
+    if(this.state.isSelected) {
+      grid.addEventListener('mouseup', () => this.onListenForMouseUp(grid));
+    }
+
+    this.setState({isSelected: true});
   }
 
   onClickSquare(evt) {
-    console.log('onClickSquare', evt.target);
+    const isActive = this.state.isActive;
+    if(isActive) {
+      this.setListener();
+    }
+
+    const square = {
+      el: evt.target,
+      selected: true,
+      isActive: true,
+    }
+    const squares = {};
+
     if(this.state.showColorPicker) return;
-    const selectedSquares = this.state.selectedSquares;
-    selectedSquares.push(evt.target);
-    this.setState({ selectedSquares: selectedSquares });
     this.toggleColorPicker();
   }
 
