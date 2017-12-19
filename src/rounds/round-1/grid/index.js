@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { ROUTES } from '../../../constants';
@@ -29,7 +28,7 @@ class Grid extends React.Component {
     });
   }
 
-  toggleMenu(evt) {
+  toggleMenu() {
     this.setState({ showMenu: !this.state.showMenu });
   }
 
@@ -40,7 +39,6 @@ class Grid extends React.Component {
   onSelectedColour(colour) {
     this.toggleColorPicker();
     this.setState({selectedColor: colour });
-    const selectedSquares = this.state.selectedSquares;
 
     this.setListener();
   }
@@ -54,7 +52,7 @@ class Grid extends React.Component {
     const grid = this.state.gridEl;
 
     //remove all listners
-    grid.removeEventListener('mousedown', this.onMouseDown, true)
+    grid.removeEventListener('mousedown', this.onMouseDown, true);
     grid.removeEventListener('mouseover', this.onElementOver, true);
   }
 
@@ -75,7 +73,7 @@ class Grid extends React.Component {
     grid.addEventListener('mouseup', () => this.onMouseUp(grid));
   }
 
-  onClickSquare(evt) {
+  onClickSquare() {
 
     // const square = {
     //   el: evt.target,
@@ -124,13 +122,11 @@ class Grid extends React.Component {
           { this.state.showMenu ? <p>Contextual menu Open</p> : <p>Contextual menu close</p>}
           <button onClick={(evt) => { this.toggleMenu(evt); }}>Open menu</button>
 
-          { this.state.showColorPicker && <ColourPicker onSelectColour={ (colour) => { this.onSelectedColour(colour); this.toggleColorPicker(); }} onClose={() => this.toggleColorPicker()} />}
+          { this.state.showColorPicker && <ColourPicker onSelectColour={(colour) => { this.onSelectedColour(colour); this.toggleColorPicker();}} onClose={() => this.toggleColorPicker()} />}
         </div>
       </div>
     );
   }
 }
-
-Grid.propTypes = {};
 
 export default Grid;

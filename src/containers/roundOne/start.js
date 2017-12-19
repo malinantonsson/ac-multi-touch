@@ -6,7 +6,6 @@ import { startRoundOne } from '../../actions/roundOne/start';
 
 import Start from '../../rounds/round-1/start';
 const mapStateToProps = state => {
-  console.log('mapStateToProps', state);
   return {
     isRoundOne: true,
     roundOneProgress: state.roundOne.progress,
