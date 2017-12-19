@@ -10,12 +10,6 @@ import { ColourPicker } from '../../../components/colour-picker';
 
 import './style.scss';
 
-const onElementOver = (evt, state) => {
-  const { isActive, selectedColor } = state;
-  if(!isActive) return;
-  evt.target.style.backgroundColor = selectedColor;
-}
-
 class Grid extends React.Component {
   constructor(props) {
     super(props);
@@ -24,11 +18,8 @@ class Grid extends React.Component {
       showMenu: false,
       selectedSquares: [],
       squares: {},
-      isActive: false,
       selectedColor: '',
       gridEl: '',
-      isSelected: false,
-      isHovering: false,
     };
   }
 
@@ -48,44 +39,49 @@ class Grid extends React.Component {
 
   onSelectedColour(colour) {
     this.toggleColorPicker();
-    this.setState({selectedColor: colour, isActive: true});
+    this.setState({selectedColor: colour });
     const selectedSquares = this.state.selectedSquares;
+
+    this.setListener();
   }
 
-  onListenForMouseUp(grid) {
-    grid.removeEventListener('mouseover', onElementOver, true);
-    this.setState({ isActive: false, isSelected: false });
+  onElementOver = evt => {
+    const { selectedColor } = this.state;
+    evt.target.style.backgroundColor = selectedColor;
+  }
+
+  onMouseUp() {
+    const grid = this.state.gridEl;
+
+    //remove all listners
+    grid.removeEventListener('mousedown', this.onMouseDown, true)
+    grid.removeEventListener('mouseover', this.onElementOver, true);
+  }
+
+  onMouseDown = evt => {
+    const grid = this.state.gridEl;
+
+    // paint first square
+    this.onElementOver(evt, this.state);
+
+    // listen for hovers
+    grid.addEventListener('mouseover', this.onElementOver, true);
   }
 
   setListener() {
     const grid = this.state.gridEl;
-    const isActive = this.state.isActive;
-    const colour = this.state.selectedColor;
 
-    if(!this.state.isHovering) { //only start this once
-      grid.addEventListener('mouseover', (evt) => onElementOver(evt, this.state), true);
-      this.setState({isHovering: true});
-    }
-    
-    if(this.state.isSelected) {
-      grid.addEventListener('mouseup', () => this.onListenForMouseUp(grid));
-    }
-
-    this.setState({isSelected: true});
+    grid.addEventListener('mousedown', this.onMouseDown, true);
+    grid.addEventListener('mouseup', () => this.onMouseUp(grid));
   }
 
   onClickSquare(evt) {
-    const isActive = this.state.isActive;
-    if(isActive) {
-      this.setListener();
-    }
 
-    const square = {
-      el: evt.target,
-      selected: true,
-      isActive: true,
-    }
-    const squares = {};
+    // const square = {
+    //   el: evt.target,
+    //   selected: true,
+    // }
+    // const squares = {};
 
     if(this.state.showColorPicker) return;
     this.toggleColorPicker();
@@ -128,8 +124,7 @@ class Grid extends React.Component {
           { this.state.showMenu ? <p>Contextual menu Open</p> : <p>Contextual menu close</p>}
           <button onClick={(evt) => { this.toggleMenu(evt); }}>Open menu</button>
 
-          { this.state.showColorPicker ? <ColourPicker onSelectColour={ (colour) => { this.onSelectedColour(colour); this.toggleColorPicker(); }} onClose={() => this.toggleColorPicker()} /> : <p>Colour picker close</p>}
-          <button onClick={() => { this.toggleColorPicker(); }}>Open colorpicker</button>
+          { this.state.showColorPicker && <ColourPicker onSelectColour={ (colour) => { this.onSelectedColour(colour); this.toggleColorPicker(); }} onClose={() => this.toggleColorPicker()} />}
         </div>
       </div>
     );
