@@ -19,6 +19,7 @@ class Grid extends React.Component {
       squares: {},
       selectedColor: '',
       gridEl: '',
+      selectedSquare: '',
     };
   }
 
@@ -39,41 +40,56 @@ class Grid extends React.Component {
   onSelectedColour(colour) {
     this.toggleColorPicker();
     this.setState({selectedColor: colour });
+    console.log(this.state.selectedSquare);
+    this.onElementOver(this.state.selectedSquare, colour);
 
     this.setListener();
   }
 
-  onElementOver = evt => {
-    const { selectedColor } = this.state;
-    evt.target.style.backgroundColor = selectedColor;
+  onElementOver = (evt, colour) => {
+    console.log(evt.fromElement);
+    console.log('colour: ', colour);
+    if(evt.target) {
+      console.log(evt.fromElement.style.backgroundColor);
+      evt.target.style.backgroundColor = evt.fromElement.style.backgroundColor;
+    } else {
+      evt.style.backgroundColor = colour;
+    }
+    //const { selectedColor } = this.state;
+    //evt.target.style.backgroundColor = selectedColor;
   }
 
   onMouseUp() {
     const grid = this.state.gridEl;
 
     //remove all listners
-    grid.removeEventListener('mousedown', this.onMouseDown, true);
-    grid.removeEventListener('mouseover', this.onElementOver, true);
+    grid.removeEventListener('pointerdown', this.onMouseDown, true);
+    grid.removeEventListener('pointerover', this.onElementOver, true);
   }
 
   onMouseDown = evt => {
+    evt.preventDefault()
     const grid = this.state.gridEl;
+    const colour = this.state.selectedColor;
+    console.log('onMouseDown');
 
     // paint first square
-    this.onElementOver(evt, this.state);
+    //this.onElementOver(evt, this.state);
+    //this.onElementOver(evt, colour);
 
     // listen for hovers
-    grid.addEventListener('mouseover', this.onElementOver, true);
+    grid.addEventListener('pointerover', this.onElementOver, true);
   }
 
   setListener() {
     const grid = this.state.gridEl;
 
-    grid.addEventListener('mousedown', this.onMouseDown, true);
-    grid.addEventListener('mouseup', () => this.onMouseUp(grid));
+    grid.addEventListener('pointerdown', this.onMouseDown, true);
+    grid.addEventListener('pointerup', () => this.onMouseUp(grid));
   }
 
-  onClickSquare() {
+  onClickSquare(evt) {
+    //console.log(evt.target);
 
     // const square = {
     //   el: evt.target,
@@ -82,6 +98,8 @@ class Grid extends React.Component {
     // const squares = {};
 
     if(this.state.showColorPicker) return;
+    console.log('onClickSquare: ', evt.target)
+    this.setState({selectedSquare: evt.target});
     this.toggleColorPicker();
   }
 
