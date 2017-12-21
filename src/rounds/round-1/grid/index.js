@@ -40,17 +40,13 @@ class Grid extends React.Component {
   onSelectedColour(colour) {
     this.toggleColorPicker();
     this.setState({selectedColor: colour });
-    console.log(this.state.selectedSquare);
     this.onElementOver(this.state.selectedSquare, colour);
 
     this.setListener();
   }
 
   onElementOver = (evt, colour) => {
-    console.log(evt.fromElement);
-    console.log('colour: ', colour);
     if(evt.target) {
-      console.log(evt.fromElement.style.backgroundColor);
       evt.target.style.backgroundColor = evt.fromElement.style.backgroundColor;
     } else {
       evt.style.backgroundColor = colour;
@@ -71,7 +67,6 @@ class Grid extends React.Component {
     evt.preventDefault()
     const grid = this.state.gridEl;
     const colour = this.state.selectedColor;
-    console.log('onMouseDown');
 
     // paint first square
     //this.onElementOver(evt, this.state);
@@ -98,9 +93,12 @@ class Grid extends React.Component {
     // const squares = {};
 
     if(this.state.showColorPicker) return;
-    console.log('onClickSquare: ', evt.target)
     this.setState({selectedSquare: evt.target});
     this.toggleColorPicker();
+  }
+
+  renderSquare(i,id, child) {
+    return child ? <Square id={id} onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}>{child}</Square> : <Square id={id} onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}/>;
   }
 
   renderSquares() {
@@ -113,12 +111,21 @@ class Grid extends React.Component {
     for(let i = 0; i < AMOUNT_OF_SQUARES; i++) {
       const hasCrh = i === crhPos;
       const hasComp = i === competitorPos;
+
+      const id = i / SQUARES_PER_ROW + 1;
+      const rowPos = Math.floor(id);
+      const remains = id - rowPos;
+      const squarePos = remains.toFixed(1) * 10 + 1;
+      const squareId = `${rowPos}-${squarePos}`;
       if(hasCrh) {
-        squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}><Crh /></Square>);
+        // squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}><Crh /></Square>);
+        squares.push(this.renderSquare(i, squareId, <Crh />));
       } else if(hasComp) {
-        squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}><Competitor /></Square>);
+        // squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}><Competitor /></Square>);
+        squares.push(this.renderSquare(i, squareId, <Competitor />));
       } else {
-        squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}/>);
+        // squares.push(<Square onClick={(evt) => { this.onClickSquare(evt); }} key={`square--${i}`}/>);
+        squares.push(this.renderSquare(i, squareId));
       }
 
     }
