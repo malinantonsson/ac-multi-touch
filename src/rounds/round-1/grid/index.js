@@ -73,7 +73,7 @@ class Grid extends React.Component {
   onMouseDown = evt => {
     evt.preventDefault()
     const grid = this.state.gridEl;
-    const colour = this.state.selectedColor;
+    //const colour = this.state.selectedColor;
     if(evt.pointerId) {
       console.log('onMouseDown: ', evt.pointerId);
     }
