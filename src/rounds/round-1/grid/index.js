@@ -47,6 +47,9 @@ class Grid extends React.Component {
 
   onElementOver = (evt, colour) => {
     if(evt.target) {
+      if(evt.pointerId) {
+        console.log('onElementOver: ', evt.pointerId);
+      }
       evt.target.style.backgroundColor = evt.fromElement.style.backgroundColor;
     } else {
       evt.style.backgroundColor = colour;
@@ -55,8 +58,12 @@ class Grid extends React.Component {
     //evt.target.style.backgroundColor = selectedColor;
   }
 
-  onMouseUp() {
+  onMouseUp(evt) {
+
     const grid = this.state.gridEl;
+    if(evt.pointerId) {
+      console.log('onMouseUp: ', evt.pointerId);
+    }
 
     //remove all listners
     grid.removeEventListener('pointerdown', this.onMouseDown, true);
@@ -67,6 +74,9 @@ class Grid extends React.Component {
     evt.preventDefault()
     const grid = this.state.gridEl;
     const colour = this.state.selectedColor;
+    if(evt.pointerId) {
+      console.log('onMouseDown: ', evt.pointerId);
+    }
 
     // paint first square
     //this.onElementOver(evt, this.state);
@@ -80,7 +90,7 @@ class Grid extends React.Component {
     const grid = this.state.gridEl;
 
     grid.addEventListener('pointerdown', this.onMouseDown, true);
-    grid.addEventListener('pointerup', () => this.onMouseUp(grid));
+    grid.addEventListener('pointerup', (evt) => this.onMouseUp(evt));
   }
 
   onClickSquare(evt) {
